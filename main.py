@@ -1,9 +1,11 @@
-import random
+import time
 
 from web3 import Web3
 
-private_key = ''  # Your private key
-wallet_address = Web3.to_checksum_address('')  # Your public key (wallet address)
+with open('private_key.txt', 'r') as pvk:
+    private_key = pvk.read().strip()  # Your private key
+with open('wallet_address.txt', 'r') as wa:
+    wallet_address = Web3.to_checksum_address(wa.read().strip())  # Your public key (wallet address)
 
 web3 = Web3(Web3.HTTPProvider('https://rpc.mainnet.dbkchain.io/'))
 nonce = web3.eth.get_transaction_count(wallet_address)
@@ -16,8 +18,7 @@ def mint():
         'from': wallet_address,
         'to': Web3.to_checksum_address('0x633b7472E1641D59334886a7692107D6332B1ff0'),
         'nonce': nonce,
-        'maxFeePerGas': int(0.000001 * 10**9),
-        'maxPriorityFeePerGas': int(0.000001 * 10**9)
+        'gasPrice': web3.eth.gas_price,
     }
 
     gas = web3.eth.estimate_gas(tx)
