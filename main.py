@@ -36,3 +36,4 @@ while True:
     except Exception as err:
         print(err)
         time.sleep(10)
+        nonce = web3.eth.get_transaction_count(wallet_address)
